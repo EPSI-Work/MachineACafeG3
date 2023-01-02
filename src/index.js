@@ -1,27 +1,27 @@
 class Machine {
-    constructor(qtiteCafe,qtiteGobelet,qtiteEau) {
-        this.qtiteEau = qtiteEau;
-        this.qtiteCafe = qtiteCafe;
-        this.qtiteGobelet = qtiteGobelet
-        this.nombreCafeServis = 0;
-        this.argentEncaisse = 0;
+    constructor(coffeeAmout,cupAmount,waterAmout) {
+        this.waterAmout = waterAmout;
+        this.coffeeAmout = coffeeAmout;
+        this.cupAmount = cupAmount
+        this.coffeeServed = 0;
+        this.moneyCollected = 0;
     }
-    Inserer(argent){
-        console.log(this.qtiteCafe)
-        if(argent>=0.40 && this.qtiteCafe>=1 && this.qtiteGobelet >= 1 && this.qtiteEau>=1){
-            this.argentEncaisse += argent;
-            this.nombreCafeServis+=1;
+    pay(money){
+        console.log(this.coffeeAmout)
+        if(money>=0.40 && this.coffeeAmout>=1 && this.cupAmount >= 1 && this.waterAmout>=1){
+            this.moneyCollected += money;
+            this.coffeeServed+=1;
             return 0;
         }else{
-            return argent;
+            return money;
         }
 
     }
-    getCafeServis(){
-        return this.nombreCafeServis;
+    getCoffeeServed(){
+        return this.coffeeServed;
     }
-    getArgentEncaisse(){
-        return this.argentEncaisse;
+    getMoneyCollected(){
+        return this.moneyCollected;
     }
 
 }

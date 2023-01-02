@@ -1,41 +1,41 @@
 const mach = require('../src/index.js');
 
-test('Insère 40 centimes', ()=> {
+test('ETANT DONNE une machine QUAND on insère 40 cts ALORS un café coule', ()=> {
     //Etant donné une machine
     const machine = new mach.Machine(1,1,1);
 
     //Quand on met 40Cent
-    machine.Inserer(0.40);
+    machine.pay(0.40);
 
     //Alors un café coule
-    expect(machine.getCafeServis()).toBe(1);
-    expect(machine.getArgentEncaisse()).toBe(0.40);
+    expect(machine.getCoffeeServed()).toBe(1);
+    expect(machine.getMoneyCollected()).toBe(0.40);
 })
 
-test('Insère moins de 0.40',()=>{
+test('ETANT DONNE une machine QUAND on insère moins de 40 cts ALORS aucun café coule ET l\'argent est rendu',()=>{
     //Etant donné une machine 
     const machine = new mach.Machine(1,1,1);
 
     //Quand on met 39Cent
-    const argentRendu = machine.Inserer(0.39)
+    const moneyReturned = machine.pay(0.39)
     //l'argent rendu doit être l'argent inséré ET aucun café ne coule
-    expect(argentRendu).toBe(0.39)
-    expect(machine.getCafeServis()).toBe(0);
+    expect(moneyReturned).toBe(0.39)
+    expect(machine.getCoffeeServed()).toBe(0);
 })
 
-test('Insère plus de 40c',()=>{
+test('ETANT DONNE une machine QUAND on insère plus de 40 cts ALORS un café coule ET l\'argent est gardé',()=>{
     //Etant donné une machine
     const machine = new mach.Machine(1,1,1);
     //on insère plus de 40c
-    machine.Inserer(41);
+    machine.pay(41);
     //Alors un café coule Et l'argent encaissé aussi
-    expect(machine.getCafeServis()).toBe(1)
-    expect(machine.getArgentEncaisse()).toBe(41)
+    expect(machine.getCoffeeServed()).toBe(1)
+    expect(machine.getMoneyCollected()).toBe(41)
 })
 
-test('Manque Ressources',()=>{
+test('ETANT DONNE une machine n\'ayant plus de café / gobelets QUAND on insère  40 cts ALORS aucun café coule ET l\'argent est rendu',()=>{
     const machine = new mach.Machine(0,0,0);
-    const argentRendu = machine.Inserer(0.40)
-    expect(machine.getCafeServis()).toBe(0);
-    expect(argentRendu).toBe(0.40)
-})
+    const moneyReturned = machine.pay(0.40)
+    expect(machine.getCoffeeServed()).toBe(0);
+    expect(moneyReturned).toBe(0.40)
+}) 
