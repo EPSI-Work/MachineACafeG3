@@ -5,7 +5,7 @@
     "main": "src/index.js",
     "type": "module",
     "scripts": {
-        "test": "Jest"
+        "test": "Jest --silent=false"
     },
     "keywords": [],
     "author": "",

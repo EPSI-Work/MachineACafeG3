@@ -1,29 +1,115 @@
+const { Cappuccino, Latte, Espresso, ClassicCoffee } = require("./coffee");
+
 class Machine {
-    constructor(coffeeAmout,cupAmount,waterAmout) {
-        this.waterAmout = waterAmout;
-        this.coffeeAmout = coffeeAmout;
-        this.cupAmount = cupAmount
-        this.coffeeServed = 0;
-        this.moneyCollected = 0;
+    constructor(cupAmount, waterAmount, money) {
+        this.waterAmount = waterAmount;
+        this.cupAmount = cupAmount;
+        this.coffees = [];
+        this.money = money;
     }
-    pay(money){
-        console.log(this.coffeeAmout)
-        if(money>=0.40 && this.coffeeAmout>=1 && this.cupAmount >= 1 && this.waterAmout>=1){
-            this.moneyCollected += money;
-            this.coffeeServed+=1;
-            return 0;
-        }else{
+
+    //Function to fill the machine with the different coffee types
+    fillCoffee(coffeeAmount, coffeType) {
+        for (let i = 0; i < coffeeAmount; i++) {
+            this.coffees.push(coffeType);
+        }
+    }
+
+    pay(money) {
+        //Check if there is enough water
+        if (this.waterAmount <= 0) {
             return money;
         }
+        //Check if there is enough cups
+        if (this.cupAmount <= 0) {
+            return money;
+        }
+        //Check if there is still coffee
+        if (this.coffees.length <= 0) {
+            return money;
+        }
+        if (money == ClassicCoffee.price) {
+            //Check if there is enough coffee of this type in the machine
+            if (this.checkEnoughCoffee("Classic Coffee")) {
+                this.money += money;
+                this.removeCoffee("Classic Coffee");
+                this.waterAmount -= 1;
+                this.cupAmount -= 1;
+                return 0;
+            } else {
+                return money;
+            }
+        }
+        if (money == Cappuccino.price) {
+            //Check if there is enough coffee of this type in the machine
+            if (this.checkEnoughCoffee("Cappuccino")) {
+                this.money += money;
+                this.removeCoffee("Cappuccino");
+                this.waterAmount -= 1;
+                this.cupAmount -= 1;
+                return 0;
+            } else {
+                return money;
+            }
+        }
+        if (money == Latte.price) {
+            //Check if there is enough coffee of this type in the machine
+            if (this.checkEnoughCoffee("Latte")) {
+                this.money += money;
+                this.removeCoffee("Latte");
+                this.waterAmount -= 1;
+                this.cupAmount -= 1;
+                return 0;
+            } else {
+                return money;
+            }
+        }
+        if (money == Espresso.price) {
+            //Check if there is enough coffee of this type in the machine
+            if (this.checkEnoughCoffee("Espresso")) {
+                this.money += money;
+                this.removeCoffee("Espresso");
+                this.waterAmount -= 1;
+                this.cupAmount -= 1;
+                return 0;
+            } else {
+                return money;
+            }
+        }
 
-    }
-    getCoffeeServed(){
-        return this.coffeeServed;
-    }
-    getMoneyCollected(){
-        return this.moneyCollected;
+        return money;
     }
 
+    //Function to check if there is enough coffee of a specific type in the machine
+    checkEnoughCoffee(coffeeType) {
+        return this.getCoffeeAmount(coffeeType) > 0;
+    }
+
+    //Function to remove only one coffee item of a specific type from the machine
+    removeCoffee(coffeeType) {
+        let coffeeOfTheType = this.coffees.filter(
+            (coffee) => coffee.coffeeName == coffeeType
+        );
+        //Remove the last coffee of the type
+        coffeeOfTheType.pop();
+        //Replace the old coffee array with the new one
+        this.coffees = this.coffees
+            .filter((coffee) => coffee.coffeeName != coffeeType)
+            .concat(coffeeOfTheType);
+    }
+
+    //Function to get the number of coffees of a specific type in the machine
+    getCoffeeAmount(coffeeType) {
+        return this.coffees.filter((coffee) => coffee.coffeeName == coffeeType)
+            .length;
+    }
+
+    getCoffee() {
+        return this.coffee;
+    }
+    getMoney() {
+        return this.money;
+    }
 }
 
 exports.Machine = Machine;
