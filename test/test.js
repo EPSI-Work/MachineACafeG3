@@ -8,7 +8,7 @@ test('Insère 40 centimes', ()=> {
     machine.Inserer(0.40);
 
     //Alors un café coule
-    expect(machine.getNombreCafeServis()).toBe(1);
+    expect(machine.getCafeServis()).toBe(1);
     expect(machine.getArgentEncaisse()).toBe(0.40);
 })
 
