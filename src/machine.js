@@ -1,10 +1,11 @@
 const { Cappuccino, Latte, Espresso, ClassicCoffee } = require("./coffee");
 
 class Machine {
-    constructor(cupAmount, waterAmount, sugarAmount, money) {
+    constructor(cupAmount, waterAmount, sugarAmount, stirrerAmount, money) {
         this.waterAmount = waterAmount;
         this.cupAmount = cupAmount;
         this.sugarAmount = sugarAmount;
+        this.stirrerAmount = stirrerAmount;
         this.coffees = [];
         this.money = money;
     }

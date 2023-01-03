@@ -102,3 +102,13 @@ test("ETANT DONNEE une machine qui ne dispose plus de sucre QUAND on insère 60 
     expect(machine.getCoffeeAmount("Latte")).toBe(coffeeNumber);
     expect(machine.getSugarAmount()).toBe(sugarNumber);
 });
+
+test("ETANT DONNEE une machine qui ne dispose plus de touillette QUAND on insère 60 cts et que l'on demande du sucre ALORS un sucré café coule sans touillette et on rend l'argent.", () => {
+    const machine = MachineBuilder.createEmptyStirrerMachine();
+    const coffeeNumber = machine.getCoffeeAmount("Latte");
+    const sugarNumber = machine.getSugarAmount();
+    const money = machine.pay(0.6, 2);
+    expect(money).toBe(0);
+    expect(machine.getCoffeeAmount("Latte")).toBe(coffeeNumber - 1);
+    expect(machine.getSugarAmount()).toBe(sugarNumber - 2);
+});
