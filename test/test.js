@@ -1,30 +1,36 @@
+const {
+    ClassicCoffee,
+    Cappuccino,
+    Latte,
+    Espresso,
+} = require("../src/coffee.js");
 const { MachineBuilder } = require("../src/machineBuilder.js");
 
 test("QUAND on insère 40 cts ALORS un café classique coule ET le stock de ce café diminue", () => {
     const machine = MachineBuilder.createDefaultMachine();
     const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
-    const money = machine.pay(0.4);
+    const money = machine.pay(ClassicCoffee.id, 0.4);
     expect(money).toBe(0);
     expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
 });
 test("QUAND on insère 50 cts ALORS un café cappucino coule ET le stock de ce café diminue", () => {
     const machine = MachineBuilder.createDefaultMachine();
     const coffeeNumber = machine.getCoffeeAmount("Cappuccino");
-    const money = machine.pay(0.5);
+    const money = machine.pay(Cappuccino.id, 0.5);
     expect(money).toBe(0);
     expect(machine.getCoffeeAmount("Cappuccino")).toBe(coffeeNumber - 1);
 });
 test("QUAND on insère 60 cts ALORS un café latte coule ET le stock de ce café diminue", () => {
     const machine = MachineBuilder.createDefaultMachine();
     const coffeeNumber = machine.getCoffeeAmount("Latte");
-    const money = machine.pay(0.6);
+    const money = machine.pay(Latte.id, 0.6);
     expect(money).toBe(0);
     expect(machine.getCoffeeAmount("Latte")).toBe(coffeeNumber - 1);
 });
 test("QUAND on insère 70 cts ALORS un café espresso coule ET le stock de ce café diminue", () => {
     const machine = MachineBuilder.createDefaultMachine();
     const coffeeNumber = machine.getCoffeeAmount("Espresso");
-    const money = machine.pay(0.7);
+    const money = machine.pay(Espresso.id, 0.7);
     expect(money).toBe(0);
     expect(machine.getCoffeeAmount("Espresso")).toBe(coffeeNumber - 1);
 });
@@ -32,44 +38,44 @@ test("QUAND on insère 70 cts ALORS un café espresso coule ET le stock de ce ca
 test("QUAND on insère 40 cts et qu'il n'y a plus de café classique ALORS on rend l'argent", () => {
     const machine = MachineBuilder.createEmptyClassicCoffeeMachine();
     machine.coffees = [];
-    const money = machine.pay(0.4);
+    const money = machine.pay(ClassicCoffee.id, 0.4);
     expect(money).toBe(0.4);
 });
 test("QUAND on insère 50 cts et qu'il n'y a plus de café cappucino ALORS on rend l'argent", () => {
     const machine = MachineBuilder.createEmptyCappuccinoMachine();
     machine.coffees = [];
-    const money = machine.pay(0.5);
+    const money = machine.pay(Cappuccino.id, 0.5);
     expect(money).toBe(0.5);
 });
 test("QUAND on insère 60 cts et qu'il n'y a plus de café latte ALORS on rend l'argent", () => {
     const machine = MachineBuilder.createEmptyLatteMachine();
     machine.coffees = [];
-    const money = machine.pay(0.6);
+    const money = machine.pay(Latte.id, 0.6);
     expect(money).toBe(0.6);
 });
 test("QUAND on insère 70 cts et qu'il n'y a plus de café espresso ALORS on rend l'argent", () => {
     const machine = MachineBuilder.createEmptyEspressoMachine();
     machine.coffees = [];
-    const money = machine.pay(0.7);
+    const money = machine.pay(Espresso.id, 0.7);
     expect(money).toBe(0.7);
 });
 
-test("QUAND on insère X cts et qu'il n'y a plus de gobelet ALORS on rend l'argent", () => {
+test("QUAND on selectionne X café et qu'il n'y a plus de gobelet ALORS on rend l'argent", () => {
     const machine = MachineBuilder.createCustomMachine(0);
-    const money = machine.pay(0.4);
+    const money = machine.pay(ClassicCoffee.id, 0.4);
     expect(money).toBe(0.4);
 });
 
-test("QUAND on insère X cts et qu'il n'y a plus d'eau ALORS on rend l'argent", () => {
+test("QUAND on selectionne X café et qu'il n'y a plus d'eau ALORS on rend l'argent", () => {
     const machine = MachineBuilder.createCustomMachine(10, 0);
-    const money = machine.pay(0.4);
-    expect(money).toBe(0.4);
+    const money = machine.pay(Latte.id, 0.6);
+    expect(money).toBe(0.6);
 });
 
-test("Quand on insère un montant ne correspondant à aucun café ALORS on rend l'argent", () => {
+test("Quand on selectionne un café ne correspondant à aucun café ALORS on rend l'argent", () => {
     const machine = MachineBuilder.createDefaultMachine();
-    const money = machine.pay(0.3);
-    expect(money).toBe(0.3);
+    const money = machine.pay(0, 0.4);
+    expect(money).toBe(0.4);
 });
 
 //SUGAR
@@ -77,7 +83,7 @@ test("ETANT DONNEE une machine qui dispose d'un stock de sucre QUAND on insère 
     const machine = MachineBuilder.createDefaultMachine();
     const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
     const sugarNumber = machine.getSugarAmount();
-    const money = machine.pay(0.4, 2);
+    const money = machine.pay(ClassicCoffee.id, 0.4, undefined, 2);
     expect(money).toBe(0);
     expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
     expect(machine.getSugarAmount()).toBe(sugarNumber - 2);
@@ -87,7 +93,7 @@ test("ETANT DONNEE une machine qui dispose d'un stock de sucre QUAND on insère 
     const machine = MachineBuilder.createDefaultMachine();
     const coffeeNumber = machine.getCoffeeAmount("Cappuccino");
     const sugarNumber = machine.getSugarAmount();
-    const money = machine.pay(0.5, sugarNumber + 1);
+    const money = machine.pay(Cappuccino.id, 0.5, undefined, sugarNumber + 1);
     expect(money).toBe(0.5);
     expect(machine.getCoffeeAmount("Cappuccino")).toBe(coffeeNumber);
     expect(machine.getSugarAmount()).toBe(sugarNumber);
@@ -97,17 +103,17 @@ test("ETANT DONNEE une machine qui ne dispose plus de sucre QUAND on insère 60 
     const machine = MachineBuilder.createEmptySugarMachine();
     const coffeeNumber = machine.getCoffeeAmount("Latte");
     const sugarNumber = machine.getSugarAmount();
-    const money = machine.pay(0.6, 2);
+    const money = machine.pay(Latte.id, 0.6, undefined, 2);
     expect(money).toBe(0.6);
     expect(machine.getCoffeeAmount("Latte")).toBe(coffeeNumber);
-    expect(machine.getSugarAmount()).toBe(sugarNumber);
+    expect(machine.getSugarAmount()).toBe(0);
 });
 
 test("ETANT DONNEE une machine qui ne dispose plus de touillette QUAND on insère 40 cts et que l'on demande du sucre ALORS un sucré café coule sans touillette.", () => {
     const machine = MachineBuilder.createEmptyStirrerMachine();
     const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
     const sugarNumber = machine.getSugarAmount();
-    const money = machine.pay(0.4, 2);
+    const money = machine.pay(ClassicCoffee.id, 0.4, undefined, 2);
     expect(money).toBe(0);
     expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
     expect(machine.getSugarAmount()).toBe(sugarNumber - 2);
@@ -118,19 +124,41 @@ test("ETANT DONNEE une machine QUAND on insère 40 cts et que l'on demande du su
     const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
     const sugarNumber = machine.getSugarAmount();
     const stirrerNumber = machine.getStirrerAmount();
-    const money = machine.pay(0.4, 1);
+    const money = machine.pay(ClassicCoffee.id, 0.4, undefined, 1);
     expect(money).toBe(0);
     expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
     expect(machine.getSugarAmount()).toBe(sugarNumber - 1);
     expect(machine.getStirrerAmount()).toBe(stirrerNumber - 1);
 });
 
-test("ETANT DONNEE une machine QUAND on insère 40 cts et que l'on demande un café classique allongé ALORS 2 doses d'eaux ont été consommées.", () => {
+test("ETANT DONNEE une machine QUAND on demande un café classique allongé ALORS 2 doses d'eaux ont été consommées.", () => {
     const machine = MachineBuilder.createDefaultMachine();
     const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
     const waterNumber = machine.getWaterAmount();
-    const money = machine.pay(0.4, undefined, 2);
+    const money = machine.pay(ClassicCoffee.id, 0.4, undefined, undefined, 2);
     expect(money).toBe(0);
     expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
     expect(machine.getWaterAmount()).toBe(waterNumber - 2);
+});
+
+//CardPayment
+
+test("ETANT DONNEE une machine qui dispose d'un stock de café QUAND on insère une carte et que l'on demande un café classique ALORS un café classique coule ET le stock de ce café diminue ET la carte est débitée", () => {
+    const machine = MachineBuilder.createDefaultMachine();
+    const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
+    const accountMoney = machine.cardPayment.getAccountMoney();
+    const money = machine.pay(ClassicCoffee.id, 0.4, true);
+    expect(money).toBe(0);
+    expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
+    expect(machine.cardPayment.getAccountMoney()).toBe(accountMoney - 0.4);
+});
+
+test("ETANT DONNEE une machine qui dispose d'un stock de café QUAND on insère une carte et que l'on demande un café classique ET que la carte n'a pas assez d'argent ALORS aucun café ne coule ET la carte n'est pas débitée", () => {
+    const machine = MachineBuilder.createEmptyCardPaymentMachine();
+    const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
+    const accountMoney = machine.cardPayment.getAccountMoney();
+    const money = machine.pay(ClassicCoffee.id, 0, true);
+    expect(money).toBe(0);
+    expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber);
+    expect(machine.cardPayment.getAccountMoney()).toBe(accountMoney);
 });

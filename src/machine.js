@@ -1,13 +1,21 @@
 const { Cappuccino, Latte, Espresso, ClassicCoffee } = require("./coffee");
 
 class Machine {
-    constructor(cupAmount, waterAmount, sugarAmount, stirrerAmount, money) {
+    constructor(
+        cupAmount,
+        waterAmount,
+        sugarAmount,
+        stirrerAmount,
+        money,
+        cardPayment
+    ) {
         this.waterAmount = waterAmount;
         this.cupAmount = cupAmount;
         this.sugarAmount = sugarAmount;
         this.stirrerAmount = stirrerAmount;
         this.coffees = [];
         this.money = money;
+        this.cardPayment = cardPayment;
     }
 
     //Function to fill the machine with the different coffee types
@@ -17,7 +25,7 @@ class Machine {
         }
     }
 
-    pay(money, sugar = 0, water = 0) {
+    pay(coffeeId = 0, money = 0, card = false, sugar = 0, water = 0) {
         //Check if there is enough water
         if (this.waterAmount <= 0) {
             return money;
@@ -47,60 +55,107 @@ class Machine {
             this.waterAmount -= 1;
         }
 
-        if (money == ClassicCoffee.price) {
-            //Check if there is enough coffee of this type in the machine
-            if (this.checkEnoughCoffee("Classic Coffee")) {
-                this.money += money;
-                this.removeCoffee("Classic Coffee");
-                this.waterAmount -= 1;
-                this.cupAmount -= 1;
-                this.sugarAmount -= sugar;
-                return 0;
-            } else {
-                return money;
-            }
-        }
-        if (money == Cappuccino.price) {
-            //Check if there is enough coffee of this type in the machine
-            if (this.checkEnoughCoffee("Cappuccino")) {
-                this.money += money;
-                this.removeCoffee("Cappuccino");
-                this.waterAmount -= 1;
-                this.cupAmount -= 1;
-                this.sugarAmount -= sugar;
-                return 0;
-            } else {
-                return money;
-            }
-        }
-        if (money == Latte.price) {
-            //Check if there is enough coffee of this type in the machine
-            if (this.checkEnoughCoffee("Latte")) {
-                this.money += money;
-                this.removeCoffee("Latte");
-                this.waterAmount -= 1;
-                this.cupAmount -= 1;
-                this.sugarAmount -= sugar;
-                return 0;
-            } else {
-                return money;
-            }
-        }
-        if (money == Espresso.price) {
-            //Check if there is enough coffee of this type in the machine
-            if (this.checkEnoughCoffee("Espresso")) {
-                this.money += money;
-                this.removeCoffee("Espresso");
-                this.waterAmount -= 1;
-                this.cupAmount -= 1;
-                this.sugarAmount -= sugar;
-                return 0;
-            } else {
-                return money;
-            }
-        }
+        switch (coffeeId) {
+            case ClassicCoffee.id:
+                // Check if there is enough coffee
+                if (this.checkEnoughCoffee("Classic Coffee")) {
+                    //Determine if the payment is made with card or money
 
-        return money;
+                    if (card) {
+                        //Check if the payment is successful. If it is, cook the coffee.
+                        if (this.cardPayment.pay(ClassicCoffee.price)) {
+                            this.cookCoffee("Classic Coffee", sugar);
+                            return 0;
+                        }
+                        return money;
+                    }
+
+                    if (ClassicCoffee.price <= money) {
+                        this.money += money;
+                        this.cookCoffee("Classic Coffee", sugar);
+                        return 0;
+                    }
+
+                    return money;
+                }
+                return money;
+
+            case Cappuccino.id:
+                // Check if there is enough coffee
+                if (this.checkEnoughCoffee("Cappuccino")) {
+                    //Determine if the payment is made with card or money
+
+                    if (card) {
+                        //Check if the payment is successful. If it is, cook the coffee.
+                        if (this.cardPayment.pay(ClassicCoffee.price)) {
+                            this.cookCoffee("Cappuccino", sugar);
+                            return 0;
+                        }
+                        return money;
+                    }
+
+                    if (ClassicCoffee.price <= money) {
+                        this.money += money;
+                        this.cookCoffee("Cappuccino", sugar);
+                        return 0;
+                    }
+
+                    return money;
+                }
+                return money;
+
+            case Latte.id:
+                // Check if there is enough coffee
+                if (this.checkEnoughCoffee("Latte")) {
+                    //Determine if the payment is made with card or money
+
+                    if (card) {
+                        //Check if the payment is successful. If it is, cook the coffee.
+                        if (this.cardPayment.pay(ClassicCoffee.price)) {
+                            this.cookCoffee("Latte", sugar);
+                            return 0;
+                        }
+                        return money;
+                    }
+
+                    if (ClassicCoffee.price <= money) {
+                        this.money += money;
+                        this.cookCoffee("Latte", sugar);
+                        return 0;
+                    }
+
+                    return money;
+                }
+
+                return money;
+
+            case Espresso.id:
+                // Check if there is enough coffee
+                if (this.checkEnoughCoffee("Espresso")) {
+                    //Determine if the payment is made with card or money
+
+                    if (card) {
+                        //Check if the payment is successful. If it is, cook the coffee.
+                        if (this.cardPayment.pay(ClassicCoffee.price)) {
+                            this.cookCoffee("Espresso", sugar);
+                            return 0;
+                        }
+                        return money;
+                    }
+
+                    if (ClassicCoffee.price <= money) {
+                        this.money += money;
+                        this.cookCoffee("Espresso", sugar);
+                        return 0;
+                    }
+
+                    return money;
+                }
+                return money;
+
+            default:
+                return money;
+        }
     }
 
     //Function to check if there is enough coffee of a specific type in the machine
@@ -119,6 +174,13 @@ class Machine {
         this.coffees = this.coffees
             .filter((coffee) => coffee.coffeeName != coffeeType)
             .concat(coffeeOfTheType);
+    }
+
+    cookCoffee(coffeeType, sugar) {
+        this.removeCoffee(coffeeType);
+        this.waterAmount -= 1;
+        this.cupAmount -= 1;
+        this.sugarAmount -= sugar;
     }
 
     //Function to get the number of coffees of a specific type in the machine

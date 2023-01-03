@@ -10,6 +10,7 @@ class ClassicCoffee extends Coffee {
         this.coffeeName = "Classic Coffee";
     }
 
+    static id = 1;
     static price = 0.4;
 }
 
@@ -19,6 +20,7 @@ class Cappuccino extends Coffee {
         this.coffeeName = "Cappuccino";
     }
 
+    static id = 2;
     static price = 0.5;
 }
 
@@ -28,6 +30,7 @@ class Latte extends Coffee {
         this.coffeeName = "Latte";
     }
 
+    static id = 3;
     static price = 0.6;
 }
 
@@ -37,6 +40,7 @@ class Espresso extends Coffee {
         this.coffeeName = "Espresso";
     }
 
+    static id = 4;
     static price = 0.7;
 }
 
