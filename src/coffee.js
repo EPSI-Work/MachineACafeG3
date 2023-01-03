@@ -1,7 +1,6 @@
 class Coffee {
     constructor() {
         this.coffeeName = "Coffee";
-        this.sugar = 0;
     }
 }
 

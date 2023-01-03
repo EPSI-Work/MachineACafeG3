@@ -1,9 +1,10 @@
 const { Cappuccino, Latte, Espresso, ClassicCoffee } = require("./coffee");
 
 class Machine {
-    constructor(cupAmount, waterAmount, money) {
+    constructor(cupAmount, waterAmount, sugarAmount, money) {
         this.waterAmount = waterAmount;
         this.cupAmount = cupAmount;
+        this.sugarAmount = sugarAmount;
         this.coffees = [];
         this.money = money;
     }
@@ -15,13 +16,17 @@ class Machine {
         }
     }
 
-    pay(money) {
+    pay(money, sugar = 0) {
         //Check if there is enough water
         if (this.waterAmount <= 0) {
             return money;
         }
         //Check if there is enough cups
         if (this.cupAmount <= 0) {
+            return money;
+        }
+        //Check if there is enough sugar
+        if (this.sugarAmount < sugar) {
             return money;
         }
         //Check if there is still coffee
@@ -35,6 +40,7 @@ class Machine {
                 this.removeCoffee("Classic Coffee");
                 this.waterAmount -= 1;
                 this.cupAmount -= 1;
+                this.sugarAmount -= sugar;
                 return 0;
             } else {
                 return money;
@@ -47,6 +53,7 @@ class Machine {
                 this.removeCoffee("Cappuccino");
                 this.waterAmount -= 1;
                 this.cupAmount -= 1;
+                this.sugarAmount -= sugar;
                 return 0;
             } else {
                 return money;
@@ -59,6 +66,7 @@ class Machine {
                 this.removeCoffee("Latte");
                 this.waterAmount -= 1;
                 this.cupAmount -= 1;
+                this.sugarAmount -= sugar;
                 return 0;
             } else {
                 return money;
@@ -71,6 +79,7 @@ class Machine {
                 this.removeCoffee("Espresso");
                 this.waterAmount -= 1;
                 this.cupAmount -= 1;
+                this.sugarAmount -= sugar;
                 return 0;
             } else {
                 return money;
@@ -102,6 +111,10 @@ class Machine {
     getCoffeeAmount(coffeeType) {
         return this.coffees.filter((coffee) => coffee.coffeeName == coffeeType)
             .length;
+    }
+
+    getSugarAmount() {
+        return this.sugarAmount;
     }
 
     getCoffee() {
