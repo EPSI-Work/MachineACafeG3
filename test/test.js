@@ -103,12 +103,24 @@ test("ETANT DONNEE une machine qui ne dispose plus de sucre QUAND on insère 60 
     expect(machine.getSugarAmount()).toBe(sugarNumber);
 });
 
-test("ETANT DONNEE une machine qui ne dispose plus de touillette QUAND on insère 60 cts et que l'on demande du sucre ALORS un sucré café coule sans touillette et on rend l'argent.", () => {
+test("ETANT DONNEE une machine qui ne dispose plus de touillette QUAND on insère 40 cts et que l'on demande du sucre ALORS un sucré café coule sans touillette.", () => {
     const machine = MachineBuilder.createEmptyStirrerMachine();
-    const coffeeNumber = machine.getCoffeeAmount("Latte");
+    const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
     const sugarNumber = machine.getSugarAmount();
-    const money = machine.pay(0.6, 2);
+    const money = machine.pay(0.4, 2);
     expect(money).toBe(0);
-    expect(machine.getCoffeeAmount("Latte")).toBe(coffeeNumber - 1);
+    expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
     expect(machine.getSugarAmount()).toBe(sugarNumber - 2);
+});
+
+test("ETANT DONNEE une machine QUAND on insère 40 cts et que l'on demande du sucre ALORS une touillette est consommée.", () => {
+    const machine = MachineBuilder.createDefaultMachine();
+    const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
+    const sugarNumber = machine.getSugarAmount();
+    const stirrerNumber = machine.getStirrerAmount();
+    const money = machine.pay(0.4, 1);
+    expect(money).toBe(0);
+    expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
+    expect(machine.getSugarAmount()).toBe(sugarNumber - 1);
+    expect(machine.getStirrerAmount()).toBe(stirrerNumber - 1);
 });

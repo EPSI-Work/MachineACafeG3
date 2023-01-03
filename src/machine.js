@@ -34,6 +34,12 @@ class Machine {
         if (this.coffees.length <= 0) {
             return money;
         }
+
+        //Check if stirrer is needed
+        if (sugar > 0) {
+            this.stirrerAmount -= 1;
+        }
+
         if (money == ClassicCoffee.price) {
             //Check if there is enough coffee of this type in the machine
             if (this.checkEnoughCoffee("Classic Coffee")) {
@@ -118,9 +124,14 @@ class Machine {
         return this.sugarAmount;
     }
 
+    getStirrerAmount() {
+        return this.stirrerAmount;
+    }
+
     getCoffee() {
         return this.coffee;
     }
+
     getMoney() {
         return this.money;
     }
