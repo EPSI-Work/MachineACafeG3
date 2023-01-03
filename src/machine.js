@@ -17,7 +17,7 @@ class Machine {
         }
     }
 
-    pay(money, sugar = 0) {
+    pay(money, sugar = 0, water = 0) {
         //Check if there is enough water
         if (this.waterAmount <= 0) {
             return money;
@@ -37,7 +37,14 @@ class Machine {
 
         //Check if stirrer is needed
         if (sugar > 0) {
-            this.stirrerAmount -= 1;
+            if (this.stirrerAmount > 0) {
+                this.stirrerAmount -= 1;
+            }
+        }
+
+        //Check if second dose of water is needed
+        if (water > 0) {
+            this.waterAmount -= 1;
         }
 
         if (money == ClassicCoffee.price) {
@@ -118,6 +125,10 @@ class Machine {
     getCoffeeAmount(coffeeType) {
         return this.coffees.filter((coffee) => coffee.coffeeName == coffeeType)
             .length;
+    }
+
+    getWaterAmount() {
+        return this.waterAmount;
     }
 
     getSugarAmount() {

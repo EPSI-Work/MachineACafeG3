@@ -124,3 +124,13 @@ test("ETANT DONNEE une machine QUAND on insère 40 cts et que l'on demande du su
     expect(machine.getSugarAmount()).toBe(sugarNumber - 1);
     expect(machine.getStirrerAmount()).toBe(stirrerNumber - 1);
 });
+
+test("ETANT DONNEE une machine QUAND on insère 40 cts et que l'on demande un café classique allongé ALORS 2 doses d'eaux ont été consommées.", () => {
+    const machine = MachineBuilder.createDefaultMachine();
+    const coffeeNumber = machine.getCoffeeAmount("Classic Coffee");
+    const waterNumber = machine.getWaterAmount();
+    const money = machine.pay(0.4, undefined, 2);
+    expect(money).toBe(0);
+    expect(machine.getCoffeeAmount("Classic Coffee")).toBe(coffeeNumber - 1);
+    expect(machine.getWaterAmount()).toBe(waterNumber - 2);
+});
