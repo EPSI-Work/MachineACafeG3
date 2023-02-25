@@ -5,12 +5,12 @@
     "main": "src/index.js",
     "type": "module",
     "scripts": {
-        "test": "Jest --silent=false --coverage"
+        "test": "npx jest --silent=false --coverage"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "jest": "^29.3.1"
+        "jest": "^29.4.3"
     }
 }
